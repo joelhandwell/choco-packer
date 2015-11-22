@@ -60,6 +60,9 @@ Write-Host "numIgnore $numIgnore"
 if ($numExe - 1 -ne $numIgnore) {
   Write-Error "FAIL: Wrong number of ignored plugins!"
 }
+if ($numIgnore -ne 0) {
+  Write-Error "FAIL: There mustn't be any ignored plugins!"
+}
 
 "TEST: Uninstall show remove the binary"
 . choco uninstall packer
@@ -87,10 +90,10 @@ Write-Host "numIgnore $numIgnore"
 if ($numExe - 1 -ne $numIgnore) {
   Write-Error "FAIL: Wrong number of ignored plugins!"
 }
-if ($numExe > 1) {
+if ($numExe -ne 1) {
   Write-Error "FAIL: There mustn't be more than one exe file!"
 }
-if ($numIgnore > 0) {
+if ($numIgnore -ne 0) {
   Write-Error "FAIL: There mustn't be any ignored plugins!"
 }
 
