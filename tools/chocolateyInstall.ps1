@@ -9,10 +9,12 @@ $checksumType64 = $checksumType
 $legacyLocation = "$env:SystemDrive\HashiCorp\packer"
 $unzipLocation = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 
-if ([System.IO.Directory]::Exists($env:ChocolateyInstall\lib\packer\tools)) {
-  # clean old plugins and ignore files
-  Write-Host "Removing old packer plugins"
-  Remove-Item $env:ChocolateyInstall\lib\packer\tools -Include "packer-*.*"
+if ([System.IO.Directory]::Exists($env:ChocolateyInstall\lib\packer)) {
+  if ([System.IO.Directory]::Exists($env:ChocolateyInstall\lib\packer\tools)) {
+    # clean old plugins and ignore files
+    Write-Host "Removing old packer plugins"
+    Remove-Item $env:ChocolateyInstall\lib\packer\tools -Include "packer-*.*"
+  }
 }
 
 # just to prepare the 0.9.0 package we use the AppVeyor artifcacts which are exe and not zip
