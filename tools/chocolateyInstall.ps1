@@ -13,7 +13,8 @@ $unzipLocation = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $file = "$($unzipLocation)\packer.exe"
 if ([System.IO.Directory]::Exists($unzipLocation)) {
   # clean old plugins and ignore files
-  Remove-Item $unzipLocation -Include "packer-*.*"
+  Write-Host "Removing old packer plugins"
+  Remove-Item $env:ChocolateyInstall\lib\packer\tools -Include "packer-*.*"
 } else {
   [System.IO.Directory]::CreateDirectory($unzipLocation)
 }

@@ -53,6 +53,8 @@ $zip.Dispose()
 #}
 
 "TEST: All plugins are ignored"
+. ls C:\programdata\chocolatey\lib\packer
+. ls C:\programdata\chocolatey\lib\packer\tools
 $numExe = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".exe" }).Count
 Write-Host "numExe $numExe"
 $numIgnore = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".ignore" }).Count
