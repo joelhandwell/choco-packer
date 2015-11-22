@@ -72,7 +72,7 @@ try {
 
 "TEST: Update from older version to single binary version works"
 . choco install -y packer $options -version 0.8.6
-. choco install -y packer $options -source .
+. choco install -y packer $options -source . -version $version
 $numExe = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".exe" }).Count
 Write-Host "numExe $numExe"
 $numIgnore = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".ignore" }).Count
@@ -82,6 +82,15 @@ if ($numExe - 1 -ne $numIgnore) {
 }
 if ($numIgnore > 0) {
   Write-Error "FAIL: There mustn't be any ignored plugins!"
+}
+
+"TEST: Uninstall show remove the binary"
+. choco uninstall packer
+try {
+  . packer
+  Write-Error "FAIL: packer binary still found"
+} catch {
+  Write-Host "PASS: packer not found"
 }
 
 "TEST: Finished"
