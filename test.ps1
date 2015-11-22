@@ -70,4 +70,18 @@ try {
   Write-Host "PASS: packer not found"
 }
 
+"TEST: Update from older version to single binary version works"
+. choco install -y packer $options -version 0.8.6
+. choco install -y packer $options -source .
+$numExe = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".exe" }).Count
+Write-Host "numExe $numExe"
+$numIgnore = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".ignore" }).Count
+Write-Host "numIgnore $numIgnore"
+if ($numExe - 1 -ne $numIgnore) {
+  Write-Error "FAIL: Wrong number of ignored plugins!"
+}
+if ($numIgnore > 0) {
+  Write-Error "FAIL: There mustn't be any ignored plugins!"
+}
+
 "TEST: Finished"
