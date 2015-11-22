@@ -38,7 +38,7 @@ if ($zip.Entries.Count -ne 5) {
 $zip.Dispose()
 
 "TEST: Installation of package should work"
-. choco install -y packer -source .
+. choco install -y packer $options -source .
 
 "TEST: Version of binary should match"
 $v = $(packer version)
