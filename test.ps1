@@ -71,6 +71,9 @@ try {
 }
 
 "TEST: Uninstall should not leave files on disk"
+if (Test-Path C:\programdata\chocolatey\lib\packer) {
+  Write-Error "FAIL: Package directory C:\programdata\chocolatey\lib\packer mustn't exist!"
+}
 $numExe = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".exe" }).Count
 Write-Host "numExe $numExe"
 $numIgnore = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".ignore" }).Count
@@ -91,6 +94,9 @@ $numIgnore = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | 
 Write-Host "numIgnore $numIgnore"
 if ($numExe - 1 -ne $numIgnore) {
   Write-Error "FAIL: Wrong number of ignored plugins!"
+}
+if ($numExe > 1) {
+  Write-Error "FAIL: There mustn't be more than one exe file!"
 }
 if ($numIgnore > 0) {
   Write-Error "FAIL: There mustn't be any ignored plugins!"
