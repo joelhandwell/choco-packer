@@ -70,6 +70,18 @@ try {
   Write-Host "PASS: packer not found"
 }
 
+"TEST: Uninstall should not leave files on disk"
+$numExe = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".exe" }).Count
+Write-Host "numExe $numExe"
+$numIgnore = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".ignore" }).Count
+Write-Host "numIgnore $numIgnore"
+if ($numExe > 0) {
+  Write-Error "FAIL: No exe file should still exist in C:\programdata\chocolatey\lib\packer\tools\!"
+}
+if ($numIgnore > 0) {
+  Write-Error "FAIL: No ignored plugin should still exist in C:\programdata\chocolatey\lib\packer\tools\!"
+}
+
 "TEST: Update from older version to single binary version works"
 . choco install -y packer $options -version 0.8.6
 . choco install -y packer $options -source . -version $version
