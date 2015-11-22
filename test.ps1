@@ -74,20 +74,12 @@ try {
 if (Test-Path C:\programdata\chocolatey\lib\packer) {
   Write-Error "FAIL: Package directory C:\programdata\chocolatey\lib\packer mustn't exist!"
 }
-$numExe = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".exe" }).Count
-Write-Host "numExe $numExe"
-$numIgnore = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".ignore" }).Count
-Write-Host "numIgnore $numIgnore"
-if ($numExe > 0) {
-  Write-Error "FAIL: No exe file should still exist in C:\programdata\chocolatey\lib\packer\tools\!"
-}
-if ($numIgnore > 0) {
-  Write-Error "FAIL: No ignored plugin should still exist in C:\programdata\chocolatey\lib\packer\tools\!"
-}
 
 "TEST: Update from older version to single binary version works"
 . choco install -y packer $options -version 0.8.6
 . choco install -y packer $options -source . -version $version
+. ls C:\programdata\chocolatey\lib\packer
+. ls C:\programdata\chocolatey\lib\packer\tools
 $numExe = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".exe" }).Count
 Write-Host "numExe $numExe"
 $numIgnore = (get-childitem -path C:\programdata\chocolatey\lib\packer\tools\ | where { $_.extension -eq ".ignore" }).Count
