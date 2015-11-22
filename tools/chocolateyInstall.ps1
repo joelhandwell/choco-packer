@@ -9,13 +9,15 @@ $checksumType64 = $checksumType
 $legacyLocation = "$env:SystemDrive\HashiCorp\packer"
 $unzipLocation = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 
-# just to prepare the 0.9.0 package we use the AppVeyor artifcacts which are exe and not zip
-$file = "$($unzipLocation)\packer.exe"
-if ([System.IO.Directory]::Exists($unzipLocation)) {
+if ([System.IO.Directory]::Exists($env:ChocolateyInstall\lib\packer\tools)) {
   # clean old plugins and ignore files
   Write-Host "Removing old packer plugins"
   Remove-Item $env:ChocolateyInstall\lib\packer\tools -Include "packer-*.*"
-} else {
+}
+
+# just to prepare the 0.9.0 package we use the AppVeyor artifcacts which are exe and not zip
+$file = "$($unzipLocation)\packer.exe"
+if ([System.IO.Directory]::Exists($unzipLocation)) {
   [System.IO.Directory]::CreateDirectory($unzipLocation)
 }
 Get-ChocolateyWebFile $packageName $file $url $url64bit -checksum $checksum -checksumType $checksumType -checksum64 $checksum64 -checksumType64 $checksumType64
