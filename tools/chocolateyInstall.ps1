@@ -9,11 +9,11 @@ $checksumType64 = $checksumType
 $legacyLocation = "$env:SystemDrive\HashiCorp\packer"
 $unzipLocation = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 
-if ([System.IO.Directory]::Exists($env:ChocolateyInstall\lib\packer)) {
-  if ([System.IO.Directory]::Exists($env:ChocolateyInstall\lib\packer\tools)) {
+if ([System.IO.Directory]::Exists("$env:ChocolateyInstall\lib\packer")) {
+  if ([System.IO.Directory]::Exists("$env:ChocolateyInstall\lib\packer\tools")) {
     # clean old plugins and ignore files
     Write-Host "Removing old packer plugins"
-    Remove-Item $env:ChocolateyInstall\lib\packer\tools -Include "packer-*.*"
+    Remove-Item "$env:ChocolateyInstall\lib\packer\tools" -Include "packer-*.*"
   }
 }
 
