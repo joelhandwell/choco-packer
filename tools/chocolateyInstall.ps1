@@ -11,7 +11,12 @@ $unzipLocation = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 
 # just to prepare the 0.9.0 package we use the AppVeyor artifcacts which are exe and not zip
 $file = "$($unzipLocation)\packer.exe"
-if (![System.IO.Directory]::Exists($unzipLocation)) {[System.IO.Directory]::CreateDirectory($unzipLocation)}
+if ([System.IO.Directory]::Exists($unzipLocation)) {
+  # clean old plugins and ignore files
+  Remove-Item $unzipLocation -Include "packer-*.*"
+} else {
+  [System.IO.Directory]::CreateDirectory($unzipLocation)
+}
 Get-ChocolateyWebFile $packageName $file $url $url64bit -checksum $checksum -checksumType $checksumType -checksum64 $checksum64 -checksumType64 $checksumType64
 
 #Install-ChocolateyZipPackage "packer" "$url" "$unzipLocation" "$url64bit" `
